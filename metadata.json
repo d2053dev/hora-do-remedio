@@ -1,0 +1,6 @@
+{
+  "name": "Hora do Remédio",
+  "description": "Controle de doses de remédios com lembretes inteligentes, histórico de consumo e relatórios compartilháveis para pacientes crônicos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

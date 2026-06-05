@@ -40,6 +40,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.local.DoseLog
 import com.example.data.local.Medication
 import com.example.data.repository.GoogleDriveSyncManager
+import coil.compose.AsyncImage
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.ui.viewinterop.AndroidView
@@ -81,6 +82,7 @@ fun MedicationApp(
     val isGoogleConnected by viewModel.isGoogleConnected.collectAsStateWithLifecycle()
     val googleAccountName by viewModel.googleAccountName.collectAsStateWithLifecycle()
     val googleAccountEmail by viewModel.googleAccountEmail.collectAsStateWithLifecycle()
+    val googleAccountPictureUrl by viewModel.googleAccountPictureUrl.collectAsStateWithLifecycle()
     val lastSyncTime by viewModel.lastSyncTime.collectAsStateWithLifecycle()
     val isSyncing by viewModel.isSyncing.collectAsStateWithLifecycle()
     val syncStatusMessage by viewModel.syncStatusMessage.collectAsStateWithLifecycle()
@@ -253,7 +255,7 @@ fun MedicationApp(
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "DoseWise",
+                            text = "Hora do Remédio",
                             color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.headlineMedium.copy(
                                 fontWeight = FontWeight.Bold
@@ -283,13 +285,22 @@ fun MedicationApp(
                                 .background(MaterialTheme.colorScheme.primaryContainer),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = if (profileName.isNotBlank()) profileName.take(2).uppercase() else "JP",
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontWeight = FontWeight.Bold
+                            if (isGoogleConnected && !googleAccountPictureUrl.isNullOrBlank()) {
+                                AsyncImage(
+                                    model = googleAccountPictureUrl,
+                                    contentDescription = "Foto de perfil do usuário",
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = androidx.compose.ui.layout.ContentScale.Crop
                                 )
-                            )
+                            } else {
+                                Text(
+                                    text = if (profileName.isNotBlank()) profileName.take(2).uppercase() else "HR",
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                )
+                            }
                         }
                     }
                 }

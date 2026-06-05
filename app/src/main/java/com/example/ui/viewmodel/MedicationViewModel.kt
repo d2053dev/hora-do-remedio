@@ -1204,6 +1204,9 @@ class MedicationViewModel(
     private val _googleAccountEmail = MutableStateFlow(syncManager.userEmail)
     val googleAccountEmail: StateFlow<String?> = _googleAccountEmail.asStateFlow()
 
+    private val _googleAccountPictureUrl = MutableStateFlow(syncManager.userPictureUrl)
+    val googleAccountPictureUrl: StateFlow<String?> = _googleAccountPictureUrl.asStateFlow()
+
     private val _lastSyncTime = MutableStateFlow(syncManager.lastSyncTimestamp)
     val lastSyncTime: StateFlow<Long> = _lastSyncTime.asStateFlow()
 
@@ -1223,11 +1226,12 @@ class MedicationViewModel(
             syncManager.saveToken(token, expiresInSec)
             _isGoogleConnected.value = true
             
-            // Fetch User info (name & email)
+            // Fetch User info (name, email & picture)
             val successUserInfo = syncManager.fetchUserInfo()
             if (successUserInfo) {
                 _googleAccountName.value = syncManager.userName
                 _googleAccountEmail.value = syncManager.userEmail
+                _googleAccountPictureUrl.value = syncManager.userPictureUrl
             }
             
             // Check if there is an existing backup on Google Drive
@@ -1353,6 +1357,7 @@ class MedicationViewModel(
         _isGoogleConnected.value = false
         _googleAccountName.value = null
         _googleAccountEmail.value = null
+        _googleAccountPictureUrl.value = null
         _pendingRestoreData.value = null
         _syncStatusMessage.value = "Sessão do Google desconectada."
     }

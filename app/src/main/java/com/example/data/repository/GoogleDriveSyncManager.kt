@@ -38,6 +38,10 @@ class GoogleDriveSyncManager(private val context: Context) {
         get() = prefs.getString("user_name", null)
         private set(value) = prefs.edit().putString("user_name", value).apply()
 
+    var userPictureUrl: String?
+        get() = prefs.getString("user_picture_url", null)
+        private set(value) = prefs.edit().putString("user_picture_url", value).apply()
+
     var lastSyncTimestamp: Long
         get() = prefs.getLong("last_sync_timestamp", 0L)
         private set(value) = prefs.edit().putLong("last_sync_timestamp", value).apply()
@@ -71,6 +75,7 @@ class GoogleDriveSyncManager(private val context: Context) {
                     val json = JSONObject(bodyStr)
                     userEmail = json.optString("email", "")
                     userName = json.optString("name", "Usuário Google")
+                    userPictureUrl = json.optString("picture", null)
                     return@withContext true
                 }
             }
